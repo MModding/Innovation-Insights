@@ -1,0 +1,11 @@
+{
+  "parent": "innovation_insights:block/orientable",
+  "textures": {
+    "front": "innovation_insights:block/compressor",
+    "left": "innovation_insights:block/compressor_both_sides",
+    "right": "innovation_insights:block/compressor_both_sides",
+    "back": "innovation_insights:block/compressor_side",
+    "top": "innovation_insights:block/compressor_side",
+    "bottom": "innovation_insights:block/compressor_side"
+  }
+}

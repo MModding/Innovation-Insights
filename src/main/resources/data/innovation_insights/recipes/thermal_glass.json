@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "STS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "innovation_insights:aluminium_shard"
+    },
+    "T": {
+      "item": "innovation_insights:aluminium_thermal_protection"
+    }
+  },
+  "result": {
+    "item": "innovation_insights:thermal_glass"
+  }
+}

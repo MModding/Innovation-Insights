@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "innovation_insights:block/thermal_reactor_frame"
+  }
+}

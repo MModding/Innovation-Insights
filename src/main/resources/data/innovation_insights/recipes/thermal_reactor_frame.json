@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SAS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "innovation_insights:steel_ingot"
+    },
+    "A": {
+      "item": "innovation_insights:aluminium_thermal_protection"
+    }
+  },
+  "result": {
+    "item": "innovation_insights:thermal_reactor_frame"
+  }
+}

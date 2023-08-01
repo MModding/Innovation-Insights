@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "STS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "innovation_insights:steel_ingot"
+    },
+    "T": {
+      "item": "innovation_insights:thermal_glass"
+    }
+  },
+  "result": {
+    "item": "innovation_insights:thermal_reactor_container"
+  }
+}
