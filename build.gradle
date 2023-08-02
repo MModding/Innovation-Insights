@@ -27,6 +27,11 @@ dependencies {
 
 	// MModding Library
 	modImplementation libs.mmodding.lib
+
+	// Energy API
+	include modApi('teamreborn:energy:2.3.0') {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 }
 
 processResources {

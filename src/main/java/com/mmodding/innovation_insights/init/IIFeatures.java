@@ -16,7 +16,7 @@ public class IIFeatures implements ElementsInitializer {
         OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, IIBlocks.DEEPSLATE_BAUXITE_ORE.getDefaultState())
     );
 
-    public static final CustomOreFeature BAUXITE_ORE_FEATURE = new CustomOreFeature(5, 5, 22, -60, BAUXITE_ORE_TARGETS);
+    public static final CustomOreFeature BAUXITE_ORE_FEATURE = new CustomOreFeature(5, 5, -60, 22, BAUXITE_ORE_TARGETS);
 
     @Override
     public void register() {

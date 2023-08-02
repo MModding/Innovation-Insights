@@ -7,6 +7,7 @@ import com.mmodding.innovation_insights.blocks.ThermalReactorInterface;
 import com.mmodding.innovation_insights.blocks.generators.AnvilFissionGenerator;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlock;
 import com.mmodding.mmodding_lib.library.blocks.CustomTransparentBlock;
+import com.mmodding.mmodding_lib.library.blocks.settings.DefaultBlockSettings;
 import com.mmodding.mmodding_lib.library.initializers.ElementsInitializer;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
@@ -56,6 +57,18 @@ public class IIBlocks implements ElementsInitializer {
 		IIItemGroups.INNOVATION_INSIGHTS_ORES
 	);
 
+	public static final CustomBlock BAUXITE_BLOCK = new CustomBlock(
+		DefaultBlockSettings.ofDefault(DefaultBlockSettings.METAL_SETTINGS),
+		true,
+		IIItemGroups.INNOVATION_INSIGHTS_MATERIALS
+	);
+
+	public static final CustomBlock ALUMINIUM_BLOCK = new CustomBlock(
+		DefaultBlockSettings.ofDefault(DefaultBlockSettings.METAL_SETTINGS),
+		true,
+		IIItemGroups.INNOVATION_INSIGHTS_MATERIALS
+	);
+
     public static final Extractor EXTRACTOR = new Extractor(
 		QuiltBlockSettings.of(Material.METAL).hardness(5.0f).requiresTool(),
 		true,
@@ -93,6 +106,8 @@ public class IIBlocks implements ElementsInitializer {
 		FURNACE_ASSEMBLER.register(InnovationInsights.createId("furnace_assembler"));
 		BAUXITE_ORE.register(InnovationInsights.createId("bauxite_ore"));
 		DEEPSLATE_BAUXITE_ORE.register(InnovationInsights.createId("deepslate_bauxite_ore"));
+		BAUXITE_BLOCK.register(InnovationInsights.createId("bauxite_block"));
+		ALUMINIUM_BLOCK.register(InnovationInsights.createId("aluminium_block"));
 		THERMAL_REACTOR_FRAME.register(InnovationInsights.createId("thermal_reactor_frame"));
 		THERMAL_REACTOR_INTERFACE.register(InnovationInsights.createId("thermal_reactor_interface"));
 		THERMAL_REACTOR_CONTAINER.register(InnovationInsights.createId("thermal_reactor_container"));

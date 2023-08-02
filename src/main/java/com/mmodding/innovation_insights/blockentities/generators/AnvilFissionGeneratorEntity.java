@@ -1,5 +1,6 @@
 package com.mmodding.innovation_insights.blockentities.generators;
 
+import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.innovation_insights.init.IIBlockEntities;
 import com.mmodding.innovation_insights.inventories.ImplementedInventory;
 import com.mmodding.innovation_insights.screenhandlers.generators.AnvilFissionGeneratorScreenHandler;
@@ -16,10 +17,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class AnvilFissionGeneratorEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
+public class AnvilFissionGeneratorEntity extends BlockEntity implements InnovationInsights.IEF, NamedScreenHandlerFactory, ImplementedInventory {
 
-    private int breakTime;
+	private final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(100000L, 100000L, 100000L);
 
     public AnvilFissionGeneratorEntity(BlockPos pos, BlockState state) {
         super(IIBlockEntities.ANVIL_FISSION_GENERATOR_ENTITY.getBlockEntityTypeIfCreated(), pos, state);
@@ -39,16 +41,16 @@ public class AnvilFissionGeneratorEntity extends BlockEntity implements NamedScr
 
     @Override
     public void readNbt(NbtCompound nbt) {
+		this.readIEF(nbt);
         this.items = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
         Inventories.readNbt(nbt, this.items);
-        this.breakTime = nbt.getInt("breakTime");
     }
 
     @Override
     public void writeNbt(NbtCompound nbt) {
-        nbt.putInt("breakTime", this.breakTime);
-        Inventories.writeNbt(nbt, this.items);
-        super.writeNbt(nbt);
+		this.writeIEF(nbt);
+		Inventories.writeNbt(nbt, this.items);
+		super.writeNbt(nbt);
     }
 
     @Override
@@ -56,9 +58,9 @@ public class AnvilFissionGeneratorEntity extends BlockEntity implements NamedScr
         return Text.of("Anvil Fission Generator");
     }
 
-    public int getBreakTime() {
-        return breakTime;
-    }
+	public SimpleEnergyStorage getEnergyStorage() {
+		return this.energyStorage;
+	}
 
     @Nullable
     @Override

@@ -1,24 +1,18 @@
 {
   "type": "innovation_insights:extraction",
-
   "input": {
     "item": "minecraft:iron_ore"
   },
-
   "defaultOutput": "minecraft:cobblestone",
   "defaultOutputAmount": 1,
-
   "outputA": "minecraft:raw_iron",
   "outputAAmount": 1,
   "outputALuck": 85,
-
   "outputB": "minecraft:iron_nugget",
   "outputBAmount": 3,
   "outputBLuck": 25,
-
   "outputC": "minecraft:raw_iron_block",
   "outputCAmount": 1,
   "outputCLuck": 5,
-
   "extractionTime": 200
 }

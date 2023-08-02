@@ -4,9 +4,11 @@ import com.mmodding.innovation_insights.init.*;
 import com.mmodding.mmodding_lib.library.base.MModdingModInitializer;
 import com.mmodding.mmodding_lib.library.config.Config;
 import com.mmodding.mmodding_lib.library.initializers.ElementsInitializer;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.ModContainer;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +45,30 @@ public class InnovationInsights implements MModdingModInitializer {
 
 	public static Identifier createId(String path) {
 		return new Identifier(InnovationInsights.id(), path);
+	}
+
+	public interface IEF {
+
+		SimpleEnergyStorage getEnergyStorage();
+
+		default long getIEF() {
+			return this.getEnergyStorage().amount;
+		}
+
+		default void setIEF(long value) {
+			this.getEnergyStorage().amount = Math.min(value, this.getEnergyStorage().capacity);
+		}
+
+		default void addIEF(long value) {
+			this.getEnergyStorage().amount += Math.min(value, this.getEnergyStorage().capacity - this.getEnergyStorage().amount);
+		}
+
+		default void readIEF(NbtCompound nbt) {
+			this.setIEF(nbt.getLong("IEF"));
+		}
+
+		default void writeIEF(NbtCompound nbt) {
+			nbt.putLong("IEF", this.getIEF());
+		}
 	}
 }

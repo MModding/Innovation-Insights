@@ -41,7 +41,6 @@ public class Compression implements Recipe<ImplementedInventory> {
     @Override
     public boolean matches(ImplementedInventory inventory, World world) {
         return inputA.test(inventory.getStack(1)) && inputB.test(inventory.getStack(2));
-
     }
 
     @Override

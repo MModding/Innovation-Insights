@@ -29,8 +29,7 @@ public class Extraction implements Recipe<ImplementedInventory> {
     private final Identifier extractionId;
     private final int extractionTime;
 
-    public Extraction(Identifier id, Ingredient ingredient, ItemStack alwaysOutput, ItemStack a, ItemStack b, ItemStack c, ItemStack d, ItemStack e,
-                      int aLuck, int bLuck, int cLuck, int dLuck, int eLuck, int time) {
+    public Extraction(Identifier id, Ingredient ingredient, ItemStack alwaysOutput, ItemStack a, ItemStack b, ItemStack c, ItemStack d, ItemStack e, int aLuck, int bLuck, int cLuck, int dLuck, int eLuck, int time) {
         extractionId = id;
         input = ingredient;
         defaultOutput = alwaysOutput;
@@ -77,13 +76,11 @@ public class Extraction implements Recipe<ImplementedInventory> {
         int outputELuck;
 
         int extractionTime;
-
     }
 
     @Override
     public boolean matches(ImplementedInventory inventory, World world) {
         return input.test(inventory.getStack(0));
-
     }
 
     @Override

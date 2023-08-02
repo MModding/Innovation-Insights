@@ -1,7 +1,11 @@
 package com.mmodding.innovation_insights.blocks.generators;
 
 import com.mmodding.innovation_insights.blockentities.generators.AnvilFissionGeneratorEntity;
+import com.mmodding.innovation_insights.init.IIBlockEntities;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlockWithEntity;
+import com.mmodding.mmodding_lib.library.blocks.interactions.FallingBlockInteraction;
+import com.mmodding.mmodding_lib.library.blocks.interactions.data.FallingBlockInteractionData;
+import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,8 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class AnvilFissionGenerator extends CustomBlockWithEntity {
+public class AnvilFissionGenerator extends CustomBlockWithEntity implements FallingBlockInteraction {
 
     public AnvilFissionGenerator(Settings settings, boolean hasItem, ItemGroup itemGroup) {
         super(settings, hasItem, itemGroup);
@@ -82,4 +87,14 @@ public class AnvilFissionGenerator extends CustomBlockWithEntity {
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
         return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
+
+	@Override
+	public void onFallingBlockInteract(FallingBlockInteractionData data) {
+		if (data.getCurrentBlockState().getBlock() instanceof AnvilBlock) {
+			data.getWorld().getBlockEntity(
+				data.getInteractPos(),
+				IIBlockEntities.ANVIL_FISSION_GENERATOR_ENTITY.getBlockEntityTypeIfCreated()
+			).ifPresent(anvilFissionGeneratorEntity -> anvilFissionGeneratorEntity.addIEF((long) data.getFallHurtAmount() * 1000L));
+		}
+	}
 }

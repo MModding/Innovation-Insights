@@ -1,24 +1,18 @@
 {
   "type": "innovation_insights:extraction",
-
   "input": {
-    "item": "innovation_insights:bauxite_ore"
+    "item": "innovation_insights:raw_bauxite"
   },
-
   "defaultOutput": "minecraft:cobblestone",
   "defaultOutputAmount": 1,
-
   "outputA": "innovation_insights:bauxite_fragment",
   "outputAAmount": 4,
   "outputALuck": 85,
-
   "outputB": "innovation_insights:aluminium_shard",
   "outputBAmount": 1,
   "outputBLuck": 25,
-
   "outputC": "innovation_insights:aluminium_ingot",
   "outputCAmount": 1,
   "outputCLuck": 5,
-
   "extractionTime": 600
 }

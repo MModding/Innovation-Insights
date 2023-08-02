@@ -16,8 +16,9 @@ public class Wrench extends CustomItem {
     public ActionResult useOnBlock(ItemUsageContext context) {
         Block block = context.getWorld().getBlockState(context.getBlockPos()).getBlock();
 
-        assert context.getPlayer() != null;
-        context.getPlayer().sendMessage(Text.of(block.getName().getString()), true);
+        if (context.getPlayer() != null) {
+			context.getPlayer().sendMessage(Text.of(block.getName().getString()), true);
+		}
 
         return super.useOnBlock(context);
     }
