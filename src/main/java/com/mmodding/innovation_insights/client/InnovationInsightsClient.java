@@ -1,5 +1,6 @@
 package com.mmodding.innovation_insights.client;
 
+import com.mmodding.innovation_insights.client.init.IIModelPredicates;
 import com.mmodding.innovation_insights.client.init.IIRenderLayers;
 import com.mmodding.innovation_insights.client.init.IIScreens;
 import com.mmodding.mmodding_lib.library.base.MModdingClientModInitializer;
@@ -20,6 +21,7 @@ public class InnovationInsightsClient implements MModdingClientModInitializer {
     @Override
     public List<ClientElementsInitializer> getClientElementsInitializers() {
         List<ClientElementsInitializer> clientElementsInitializers = new ArrayList<>();
+        clientElementsInitializers.add(new IIModelPredicates());
         clientElementsInitializers.add(new IIRenderLayers());
         clientElementsInitializers.add(new IIScreens());
         return clientElementsInitializers;

@@ -4,6 +4,7 @@ import com.mmodding.innovation_insights.init.*;
 import com.mmodding.mmodding_lib.library.base.MModdingModInitializer;
 import com.mmodding.mmodding_lib.library.config.Config;
 import com.mmodding.mmodding_lib.library.initializers.ElementsInitializer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -47,6 +48,10 @@ public class InnovationInsights implements MModdingModInitializer {
 		return new Identifier(InnovationInsights.id(), path);
 	}
 
+	public static boolean excludeBasics(ItemStack stack) {
+		return !stack.isOf(IIItems.INNOVATION_ENERGY_FLUX_METER) && !stack.isOf(IIItems.WRENCH);
+	}
+
 	public interface IEF {
 
 		SimpleEnergyStorage getEnergyStorage();
@@ -56,11 +61,19 @@ public class InnovationInsights implements MModdingModInitializer {
 		}
 
 		default void setIEF(long value) {
-			this.getEnergyStorage().amount = Math.min(value, this.getEnergyStorage().capacity);
+			this.getEnergyStorage().amount = Math.max(Math.min(value, this.getEnergyStorage().capacity), 0);
 		}
 
 		default void addIEF(long value) {
 			this.getEnergyStorage().amount += Math.min(value, this.getEnergyStorage().capacity - this.getEnergyStorage().amount);
+		}
+
+		default void removeIEF(long value) {
+			this.getEnergyStorage().amount -= Math.min(value, this.getEnergyStorage().amount);
+		}
+
+		default long getCapacity() {
+			return this.getEnergyStorage().capacity;
 		}
 
 		default void readIEF(NbtCompound nbt) {

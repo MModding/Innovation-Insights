@@ -1,5 +1,6 @@
 package com.mmodding.innovation_insights.blocks;
 
+import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.innovation_insights.blockentities.CompressorEntity;
 import com.mmodding.innovation_insights.init.IIRecipeTypes;
 import com.mmodding.innovation_insights.recipes.Compression;
@@ -51,14 +52,19 @@ public class Compressor extends CustomBlockWithEntity implements BlockEntityProv
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient()) {
-            NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+        if (InnovationInsights.excludeBasics(player.getStackInHand(hand))) {
+            if (!world.isClient()) {
+                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
 
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
+                if (screenHandlerFactory != null) {
+                    player.openHandledScreen(screenHandlerFactory);
+                }
             }
+            return ActionResult.SUCCESS;
         }
-        return ActionResult.SUCCESS;
+        else {
+            return ActionResult.PASS;
+        }
     }
 
     @Override

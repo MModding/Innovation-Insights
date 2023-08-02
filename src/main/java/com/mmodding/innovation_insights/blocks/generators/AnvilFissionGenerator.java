@@ -1,5 +1,6 @@
 package com.mmodding.innovation_insights.blocks.generators;
 
+import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.innovation_insights.blockentities.generators.AnvilFissionGeneratorEntity;
 import com.mmodding.innovation_insights.init.IIBlockEntities;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlockWithEntity;
@@ -22,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 public class AnvilFissionGenerator extends CustomBlockWithEntity implements FallingBlockInteraction {
 
@@ -43,14 +43,19 @@ public class AnvilFissionGenerator extends CustomBlockWithEntity implements Fall
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient()) {
-            NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+        if (InnovationInsights.excludeBasics(player.getStackInHand(hand))) {
+            if (!world.isClient()) {
+                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
 
-            if (screenHandlerFactory != null) {
-                player.openHandledScreen(screenHandlerFactory);
+                if (screenHandlerFactory != null) {
+                    player.openHandledScreen(screenHandlerFactory);
+                }
             }
+            return ActionResult.SUCCESS;
         }
-        return ActionResult.SUCCESS;
+        else {
+            return ActionResult.PASS;
+        }
     }
 
     @Override
