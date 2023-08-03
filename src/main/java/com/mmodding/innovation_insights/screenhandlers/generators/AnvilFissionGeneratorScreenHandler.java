@@ -1,49 +1,28 @@
 package com.mmodding.innovation_insights.screenhandlers.generators;
 
 import com.mmodding.innovation_insights.init.IIScreenHandlers;
-import net.minecraft.entity.player.PlayerEntity;
+import com.mmodding.innovation_insights.init.IITags;
+import com.mmodding.mmodding_lib.library.screenhandlers.BasicScreenHandler;
+import com.mmodding.mmodding_lib.library.screenhandlers.slots.OutputSlot;
+import com.mmodding.mmodding_lib.library.screenhandlers.slots.ProperTagSlot;
+import com.mmodding.mmodding_lib.library.utils.ScreenHandlerUtils;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
 
-public class AnvilFissionGeneratorScreenHandler extends ScreenHandler {
+public class AnvilFissionGeneratorScreenHandler extends BasicScreenHandler {
 
-    private final Inventory inventory;
+	public AnvilFissionGeneratorScreenHandler(int syncId, PlayerInventory playerInventory) {
+		this(syncId, playerInventory, new SimpleInventory(3), 3);
+	}
 
-    public AnvilFissionGeneratorScreenHandler(int syncId, PlayerInventory inv) {
-        this(syncId, inv, new SimpleInventory((1)));
-    }
+    public AnvilFissionGeneratorScreenHandler(int syncID, PlayerInventory playerInventory, Inventory inventory, int inventorySize) {
+        super(IIScreenHandlers.ANVIL_FISSION_GENERATOR_HANDLER, syncID, playerInventory, inventory, inventorySize);
 
-    public AnvilFissionGeneratorScreenHandler(int syncID, PlayerInventory playerInv, Inventory inv) {
-        super(IIScreenHandlers.ANVIL_FISSION_GENERATOR_HANDLER, syncID);
-        checkSize(inv, 1);
-        this.inventory = inv;
+        this.addSlot(new ProperTagSlot(this.inventory, 0, 80,40, IITags.BATTERIES));
+        this.addSlot(new OutputSlot(this.inventory, 1, 54, 40));
+        this.addSlot(new OutputSlot(this.inventory, 2, 106, 40));
 
-        inventory.onOpen(playerInv.player);
-
-        this.addSlot(new Slot(inv, 0, 80,24));
-
-        for (int m = 0; m < 3; ++m) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInv, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
-            }
-        }
-
-        for (int hotBarSlot = 0; hotBarSlot < 9; hotBarSlot++) {
-            this.addSlot(new Slot(playerInv, hotBarSlot, 8 + hotBarSlot * 18, 142));
-        }
-    }
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
-    }
-
-    @Override
-    public ItemStack quickTransfer(PlayerEntity player, int index) {
-        return null;
+		ScreenHandlerUtils.createPlayerSlots(this, playerInventory);
     }
 }

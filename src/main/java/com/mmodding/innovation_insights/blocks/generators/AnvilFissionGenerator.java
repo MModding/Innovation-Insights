@@ -9,7 +9,10 @@ import com.mmodding.mmodding_lib.library.blocks.interactions.data.FallingBlockIn
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -95,11 +98,21 @@ public class AnvilFissionGenerator extends CustomBlockWithEntity implements Fall
 
 	@Override
 	public void onFallingBlockInteract(FallingBlockInteractionData data) {
-		if (data.getCurrentBlockState().getBlock() instanceof AnvilBlock) {
+		if (data.getFallingBlockState().getBlock() instanceof AnvilBlock) {
 			data.getWorld().getBlockEntity(
 				data.getInteractPos(),
 				IIBlockEntities.ANVIL_FISSION_GENERATOR_ENTITY.getBlockEntityTypeIfCreated()
-			).ifPresent(anvilFissionGeneratorEntity -> anvilFissionGeneratorEntity.addIEF((long) data.getFallHurtAmount() * 1000L));
+			).ifPresent(blockEntity -> blockEntity.triggerFission(data));
 		}
 	}
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return !world.isClient() ? checkType(
+            type,
+            IIBlockEntities.ANVIL_FISSION_GENERATOR_ENTITY.getBlockEntityTypeIfCreated(),
+            (a, b, c, blockEntity) -> blockEntity.tick()
+        ) : null;
+    }
 }

@@ -1,5 +1,6 @@
 package com.mmodding.innovation_insights.items;
 
+import com.mmodding.innovation_insights.InnovationEnergyFlux;
 import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.mmodding_lib.library.items.CustomItem;
 import com.mmodding.mmodding_lib.library.utils.Colors;
@@ -17,6 +18,7 @@ import net.minecraft.text.Texts;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 
 public class InnovationEnergyFluxMeter extends CustomItem implements FabricItem {
@@ -26,7 +28,7 @@ public class InnovationEnergyFluxMeter extends CustomItem implements FabricItem 
 	}
 
 	public static int getIndicatorRate(ItemStack stack) {
-		return stack.getOrCreateNbt().getInt("IndicatorRate");
+		return MathHelper.clamp(stack.getOrCreateNbt().getInt("IndicatorRate"), 0, 10);
 	}
 
 	public static boolean isReturningToBasePos(ItemStack stack) {
@@ -34,7 +36,7 @@ public class InnovationEnergyFluxMeter extends CustomItem implements FabricItem 
 	}
 
 	private void setIndicatorRate(ItemStack stack, int indicatorRate) {
-		stack.getOrCreateNbt().putInt("IndicatorRate", indicatorRate);
+		stack.getOrCreateNbt().putInt("IndicatorRate", MathHelper.clamp(indicatorRate, 0, 10));
 	}
 
 	private void setReturningToBasePos(ItemStack stack, boolean returningToBasePos) {
@@ -54,7 +56,7 @@ public class InnovationEnergyFluxMeter extends CustomItem implements FabricItem 
 			if (blockState.hasBlockEntity()) {
 				BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
 
-				if (blockEntity instanceof InnovationInsights.IEF IEF) {
+				if (blockEntity instanceof InnovationEnergyFlux.Container IEF) {
 
 					ItemStack stack = context.getStack();
 

@@ -1,9 +1,9 @@
 package com.mmodding.innovation_insights.client.init;
 
 import com.mmodding.innovation_insights.init.IIScreenHandlers;
-import com.mmodding.innovation_insights.screens.CompressorScreen;
-import com.mmodding.innovation_insights.screens.ExtractorScreen;
-import com.mmodding.innovation_insights.screens.generators.AnvilFissionGeneratorScreen;
+import com.mmodding.innovation_insights.client.screens.engines.CompressorScreen;
+import com.mmodding.innovation_insights.client.screens.engines.ExtractorScreen;
+import com.mmodding.innovation_insights.client.screens.generators.AnvilFissionGeneratorScreen;
 import com.mmodding.mmodding_lib.library.initializers.ClientElementsInitializer;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 

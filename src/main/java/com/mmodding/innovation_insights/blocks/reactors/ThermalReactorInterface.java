@@ -1,4 +1,4 @@
-package com.mmodding.innovation_insights.blocks;
+package com.mmodding.innovation_insights.blocks.reactors;
 
 import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlockWithEntity;

@@ -1,8 +1,8 @@
 package com.mmodding.innovation_insights.init;
 
 import com.mmodding.innovation_insights.InnovationInsights;
-import com.mmodding.innovation_insights.blockentities.CompressorEntity;
-import com.mmodding.innovation_insights.blockentities.ExtractorEntity;
+import com.mmodding.innovation_insights.blockentities.engines.CompressorEntity;
+import com.mmodding.innovation_insights.blockentities.engines.ExtractorEntity;
 import com.mmodding.innovation_insights.blockentities.generators.AnvilFissionGeneratorEntity;
 import com.mmodding.mmodding_lib.library.blockentities.CustomBlockEntityType;
 import com.mmodding.mmodding_lib.library.initializers.ElementsInitializer;

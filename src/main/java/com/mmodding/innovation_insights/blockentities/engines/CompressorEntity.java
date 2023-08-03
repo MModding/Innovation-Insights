@@ -1,8 +1,8 @@
-package com.mmodding.innovation_insights.blockentities;
+package com.mmodding.innovation_insights.blockentities.engines;
 
 import com.mmodding.innovation_insights.init.IIBlockEntities;
 import com.mmodding.innovation_insights.inventories.ImplementedInventory;
-import com.mmodding.innovation_insights.screenhandlers.ExtractorScreenHandler;
+import com.mmodding.innovation_insights.screenhandlers.engines.CompressorScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,15 +17,15 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public class ExtractorEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
+public class CompressorEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
 
-    private int extractionTime;
+    private int compressionTime;
 
-    public ExtractorEntity(BlockPos pos, BlockState state) {
-        super(IIBlockEntities.EXTRACTOR_ENTITY.getBlockEntityTypeIfCreated(), pos, state);
+    public CompressorEntity(BlockPos pos, BlockState state) {
+        super(IIBlockEntities.COMPRESSOR_ENTITY.getBlockEntityTypeIfCreated(), pos, state);
     }
 
-    private DefaultedList<ItemStack> items = DefaultedList.ofSize(7, ItemStack.EMPTY);
+    private DefaultedList<ItemStack> items = DefaultedList.ofSize(3, ItemStack.EMPTY);
 
     @Override
     public DefaultedList<ItemStack> getItems() {
@@ -41,28 +41,28 @@ public class ExtractorEntity extends BlockEntity implements NamedScreenHandlerFa
     public void readNbt(NbtCompound nbt) {
         this.items = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
         Inventories.readNbt(nbt, this.items);
-        this.extractionTime = nbt.getInt("extractionTime");
+        this.compressionTime = nbt.getInt("compressionTime");
     }
 
     @Override
     public void writeNbt(NbtCompound nbt) {
-        nbt.putInt("extractionTime", this.extractionTime);
-        Inventories.writeNbt(nbt, items);
+        nbt.putInt("compressionTime", this.compressionTime);
+        Inventories.writeNbt(nbt, this.items);
         super.writeNbt(nbt);
     }
 
     @Override
     public Text getDisplayName() {
-        return Text.of("Extractor");
+        return Text.of("Compressor");
     }
 
-    public int getExtractionTime() {
-        return this.extractionTime;
+    public int getCompressionTime() {
+        return compressionTime;
     }
 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new ExtractorScreenHandler(syncId, inv, this);
+        return new CompressorScreenHandler(syncId, inv, this, 3);
     }
 }

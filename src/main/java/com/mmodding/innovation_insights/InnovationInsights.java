@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.ModContainer;
+import team.reborn.energy.api.base.SimpleEnergyItem;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class InnovationInsights implements MModdingModInitializer {
 		elementsInitializers.add(new IIBlocks());
 		elementsInitializers.add(new IIBlockEntities());
 		elementsInitializers.add(new IIItems());
+		elementsInitializers.add(new IIEvents());
 		elementsInitializers.add(new IIItemGroups());
 		elementsInitializers.add(new IIFeatures());
 		elementsInitializers.add(new IIScreenHandlers());
@@ -50,38 +52,5 @@ public class InnovationInsights implements MModdingModInitializer {
 
 	public static boolean excludeBasics(ItemStack stack) {
 		return !stack.isOf(IIItems.INNOVATION_ENERGY_FLUX_METER) && !stack.isOf(IIItems.WRENCH);
-	}
-
-	public interface IEF {
-
-		SimpleEnergyStorage getEnergyStorage();
-
-		default long getIEF() {
-			return this.getEnergyStorage().amount;
-		}
-
-		default void setIEF(long value) {
-			this.getEnergyStorage().amount = Math.max(Math.min(value, this.getEnergyStorage().capacity), 0);
-		}
-
-		default void addIEF(long value) {
-			this.getEnergyStorage().amount += Math.min(value, this.getEnergyStorage().capacity - this.getEnergyStorage().amount);
-		}
-
-		default void removeIEF(long value) {
-			this.getEnergyStorage().amount -= Math.min(value, this.getEnergyStorage().amount);
-		}
-
-		default long getCapacity() {
-			return this.getEnergyStorage().capacity;
-		}
-
-		default void readIEF(NbtCompound nbt) {
-			this.setIEF(nbt.getLong("IEF"));
-		}
-
-		default void writeIEF(NbtCompound nbt) {
-			nbt.putLong("IEF", this.getIEF());
-		}
 	}
 }

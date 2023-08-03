@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "com.mmodding.innovation_insights.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "SimpleEnergyItemMixin"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 1

@@ -1,9 +1,9 @@
 package com.mmodding.innovation_insights.init;
 
 import com.mmodding.innovation_insights.InnovationInsights;
-import com.mmodding.innovation_insights.blocks.Compressor;
-import com.mmodding.innovation_insights.blocks.Extractor;
-import com.mmodding.innovation_insights.blocks.ThermalReactorInterface;
+import com.mmodding.innovation_insights.blocks.engines.Compressor;
+import com.mmodding.innovation_insights.blocks.engines.Extractor;
+import com.mmodding.innovation_insights.blocks.reactors.ThermalReactorInterface;
 import com.mmodding.innovation_insights.blocks.generators.AnvilFissionGenerator;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlock;
 import com.mmodding.mmodding_lib.library.blocks.CustomTransparentBlock;
@@ -18,25 +18,25 @@ public class IIBlocks implements ElementsInitializer {
     public static final CustomBlock THERMAL_REACTOR_FRAME = new CustomBlock(
 		QuiltBlockSettings.of(Material.METAL).hardness(5.0f).requiresTool(),
 		true,
-		IIItemGroups.INNOVATION_INSIGHTS_REACTIONS
+		IIItemGroups.INNOVATION_INSIGHTS_REACTORS
 	);
 
     public static final ThermalReactorInterface THERMAL_REACTOR_INTERFACE = new ThermalReactorInterface(
 		QuiltBlockSettings.of(Material.METAL).hardness(5.0f).requiresTool(),
 		true,
-		IIItemGroups.INNOVATION_INSIGHTS_REACTIONS
+		IIItemGroups.INNOVATION_INSIGHTS_REACTORS
 	);
 
     public static final CustomTransparentBlock THERMAL_REACTOR_CONTAINER = new CustomTransparentBlock(
 		QuiltBlockSettings.of(Material.METAL).hardness(5.0f).requiresTool().nonOpaque(),
 		true,
-		IIItemGroups.INNOVATION_INSIGHTS_REACTIONS
+		IIItemGroups.INNOVATION_INSIGHTS_REACTORS
 	);
 
     public static final CustomBlock THERMAL_REACTOR_CORE = new CustomBlock(
 		QuiltBlockSettings.of(Material.METAL).hardness(5.0f).requiresTool(),
 		true,
-		IIItemGroups.INNOVATION_INSIGHTS_REACTIONS
+		IIItemGroups.INNOVATION_INSIGHTS_REACTORS
 	);
 
     public static final Compressor COMPRESSOR = new Compressor(

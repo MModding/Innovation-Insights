@@ -13,7 +13,7 @@ public class IIItemGroups implements ElementsInitializer {
         () -> new ItemStack(IIItems.WRENCH)
     );
 
-    public static final ItemGroup INNOVATION_INSIGHTS_REACTIONS = QuiltItemGroup.createWithIcon(
+    public static final ItemGroup INNOVATION_INSIGHTS_REACTORS = QuiltItemGroup.createWithIcon(
         InnovationInsights.createId("reactors"),
         () -> new ItemStack(IIBlocks.THERMAL_REACTOR_FRAME)
     );

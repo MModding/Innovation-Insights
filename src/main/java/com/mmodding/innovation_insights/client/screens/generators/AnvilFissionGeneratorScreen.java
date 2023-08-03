@@ -1,4 +1,4 @@
-package com.mmodding.innovation_insights.screens.generators;
+package com.mmodding.innovation_insights.client.screens.generators;
 
 import com.mmodding.innovation_insights.InnovationInsights;
 import com.mojang.blaze3d.systems.RenderSystem;

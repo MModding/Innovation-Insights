@@ -1,7 +1,7 @@
-package com.mmodding.innovation_insights.blocks;
+package com.mmodding.innovation_insights.blocks.engines;
 
 import com.mmodding.innovation_insights.InnovationInsights;
-import com.mmodding.innovation_insights.blockentities.ExtractorEntity;
+import com.mmodding.innovation_insights.blockentities.engines.ExtractorEntity;
 import com.mmodding.innovation_insights.init.IIRecipeTypes;
 import com.mmodding.innovation_insights.recipes.Extraction;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlockWithEntity;
