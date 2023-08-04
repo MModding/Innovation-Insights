@@ -16,7 +16,6 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -27,20 +26,13 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Extractor extends CustomBlockWithEntity implements BlockEntityProvider {
 
-    public static final DirectionProperty FACING;
-
     public Extractor(Settings settings, boolean hasItem, ItemGroup itemGroup) {
         super(settings, hasItem, itemGroup);
-        setDefaultState(this.getStateManager().getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
-        stateManager.add(Properties.HORIZONTAL_FACING);
+        this.setDefaultState(this.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH));
     }
 
     @Nullable
@@ -89,7 +81,77 @@ public class Extractor extends CustomBlockWithEntity implements BlockEntityProvi
         world.scheduleBlockTick(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), this, 1);
     }
 
-    @Override
+	private ItemStack getOutputForSlot(Extraction extraction, int slotIndex) {
+		return switch (slotIndex) {
+			default -> extraction.getOutput();
+			case 2 -> extraction.getOutputA();
+			case 3 -> extraction.getOutputB();
+			case 4 -> extraction.getOutputC();
+			case 5 -> extraction.getOutputD();
+			case 6 -> extraction.getOutputE();
+		};
+	}
+
+	private int getOutputLuckForSlot(Extraction extraction, int slotIndex) {
+		return switch (slotIndex) {
+			default -> extraction.getOutputALuck();
+			case 3 -> extraction.getOutputBLuck();
+			case 4 -> extraction.getOutputCLuck();
+			case 5 -> extraction.getOutputDLuck();
+			case 6 -> extraction.getOutputELuck();
+		};
+	}
+
+	private boolean isSlotValid(ExtractorEntity extractorEntity, Extraction extraction, int slotIndex) {
+		ItemStack actualStack = extractorEntity.getStack(slotIndex);
+		ItemStack outputStack = this.getOutputForSlot(extraction, slotIndex);
+
+		if (actualStack.isItemEqual(outputStack) || actualStack.isEmpty()) {
+			return actualStack.getCount() <= actualStack.getMaxCount() - outputStack.getCount();
+		}
+		else {
+			return false;
+		}
+	}
+
+	private boolean areSlotsValid(ExtractorEntity extractorEntity, Extraction extraction) {
+		for (int slotIndex : IntStream.range(1, 7).toArray()) {
+			if (!this.isSlotValid(extractorEntity, extraction, slotIndex)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean isLuckValid(RandomGenerator random, Extraction extraction, int slotIndex) {
+		return random.nextInt(100) < this.getOutputLuckForSlot(extraction, slotIndex);
+	}
+
+	private void createResult(RandomGenerator random, ExtractorEntity extractorEntity, Extraction extraction, int slotIndex) {
+		ItemStack actualStack = extractorEntity.getStack(slotIndex);
+		ItemStack outputStack = this.getOutputForSlot(extraction, slotIndex);
+
+		ItemStack resultStack = new ItemStack(outputStack.getItem(), actualStack.getCount() + outputStack.getCount());
+
+		if (slotIndex != 1) {
+			if (this.isLuckValid(random, extraction, slotIndex)) {
+				extractorEntity.setStack(slotIndex, resultStack);
+			}
+		}
+		else {
+			extractorEntity.setStack(slotIndex, resultStack);
+		}
+	}
+
+	private void createResults(RandomGenerator random, ExtractorEntity extractorEntity, Extraction extraction) {
+		extractorEntity.removeStack(0, 1);
+
+		for (int slotIndex : IntStream.range(1, 7).toArray()) {
+			this.createResult(random, extractorEntity, extraction, slotIndex);
+		}
+	}
+
+	@Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
         super.scheduledTick(state, world, pos, random);
 
@@ -108,49 +170,16 @@ public class Extractor extends CustomBlockWithEntity implements BlockEntityProvi
 
         if (match.isPresent()) {
             if (extractionTime >= match.get().getExtractionTime()) {
-                if ((extractorEntity.getStack(1).getItem() == match.get().getOutput().getItem() || extractorEntity.getStack(1) == ItemStack.EMPTY) && (extractorEntity.getStack(1).getCount() <= 64 - match.get().getOutput().getCount())) {
-                    if ((extractorEntity.getStack(2).getItem() == match.get().getOutputA().getItem() || extractorEntity.getStack(2) == ItemStack.EMPTY) && (extractorEntity.getStack(2).getCount() <= 64 - match.get().getOutputA().getCount())) {
-                        if ((extractorEntity.getStack(3).getItem() == match.get().getOutputB().getItem() || extractorEntity.getStack(3) == ItemStack.EMPTY) && (extractorEntity.getStack(3).getCount() <= 64 - match.get().getOutputB().getCount())) {
-                            if ((extractorEntity.getStack(4).getItem() == match.get().getOutputC().getItem() || extractorEntity.getStack(4) == ItemStack.EMPTY) && (extractorEntity.getStack(4).getCount() <= 64 - match.get().getOutputC().getCount())) {
-                                if ((extractorEntity.getStack(5).getItem() == match.get().getOutputD().getItem() || extractorEntity.getStack(5) == ItemStack.EMPTY) && (extractorEntity.getStack(5).getCount() <= 64 - match.get().getOutputD().getCount())) {
-                                    if ((extractorEntity.getStack(6).getItem() == match.get().getOutputE().getItem() || extractorEntity.getStack(6) == ItemStack.EMPTY) && (extractorEntity.getStack(6).getCount() <= 64 - match.get().getOutputE().getCount())) {
+				if (this.areSlotsValid(extractorEntity, match.get())) {
 
-                                        NbtCompound resetExtractionTimeNbt = new NbtCompound();
-										extractorEntity.writeNbt(resetExtractionTimeNbt);
+					NbtCompound resetExtractionTimeNbt = new NbtCompound();
+					extractorEntity.writeNbt(resetExtractionTimeNbt);
 
-										resetExtractionTimeNbt.putInt("extractionTime", 0);
-                                        extractorEntity.readNbt(resetExtractionTimeNbt);
+					resetExtractionTimeNbt.putInt("extractionTime", 0);
+					extractorEntity.readNbt(resetExtractionTimeNbt);
 
-                                        extractorEntity.removeStack(0, 1);
-
-                                        extractorEntity.setStack(1, new ItemStack(match.get().getOutput().getItem(), extractorEntity.getStack(1).getCount() + match.get().getOutput().getCount()));
-
-                                        if (new Random().nextInt(100) + 1 < match.get().getOutputALuck()) {
-                                            extractorEntity.setStack(2, new ItemStack(match.get().getOutputA().getItem(), extractorEntity.getStack(2).getCount() + match.get().getOutputA().getCount()));
-                                        }
-
-                                        if (new Random().nextInt(100) + 1 < match.get().getOutputBLuck()) {
-                                            extractorEntity.setStack(3, new ItemStack(match.get().getOutputB().getItem(), extractorEntity.getStack(3).getCount() + match.get().getOutputB().getCount()));
-                                        }
-
-                                        if (new Random().nextInt(100) + 1 < match.get().getOutputCLuck()) {
-                                            extractorEntity.setStack(4, new ItemStack(match.get().getOutputC().getItem(), extractorEntity.getStack(4).getCount() + match.get().getOutputC().getCount()));
-                                        }
-
-                                        if (new Random().nextInt(100) + 1 < match.get().getOutputDLuck()) {
-                                            extractorEntity.setStack(5, new ItemStack(match.get().getOutputD().getItem(), extractorEntity.getStack(5).getCount() + match.get().getOutputD().getCount()));
-                                        }
-
-                                        if (new Random().nextInt(100) + 1 < match.get().getOutputELuck()) {
-                                            extractorEntity.setStack(6, new ItemStack(match.get().getOutputE().getItem(), extractorEntity.getStack(6).getCount() + match.get().getOutputE().getCount()));
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+					this.createResults(random, extractorEntity, match.get());
+				}
             }
         }
 
@@ -165,17 +194,18 @@ public class Extractor extends CustomBlockWithEntity implements BlockEntityProvi
 
     @Override
     public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+        return state.with(Properties.HORIZONTAL_FACING, rotation.rotate(state.get(Properties.HORIZONTAL_FACING)));
     }
 
     @Override
     public BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
+        return state.rotate(mirror.getRotation(state.get(Properties.HORIZONTAL_FACING)));
     }
 
-    static {
-        FACING = Properties.HORIZONTAL_FACING;
-    }
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
+		stateManager.add(Properties.HORIZONTAL_FACING);
+	}
 
     @Override
     public boolean hasComparatorOutput(BlockState state) {

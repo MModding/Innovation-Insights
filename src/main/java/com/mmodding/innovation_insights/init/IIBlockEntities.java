@@ -1,11 +1,13 @@
 package com.mmodding.innovation_insights.init;
 
+import com.mmodding.innovation_insights.InnovationEnergyFlux;
 import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.innovation_insights.blockentities.engines.CompressorEntity;
 import com.mmodding.innovation_insights.blockentities.engines.ExtractorEntity;
 import com.mmodding.innovation_insights.blockentities.generators.AnvilFissionGeneratorEntity;
 import com.mmodding.mmodding_lib.library.blockentities.CustomBlockEntityType;
 import com.mmodding.mmodding_lib.library.initializers.ElementsInitializer;
+import team.reborn.energy.api.EnergyStorage;
 
 public class IIBlockEntities implements ElementsInitializer {
 
@@ -20,5 +22,16 @@ public class IIBlockEntities implements ElementsInitializer {
         COMPRESSOR_ENTITY.createAndRegister(InnovationInsights.createId("compressor_entity"));
         EXTRACTOR_ENTITY.createAndRegister(InnovationInsights.createId("extractor_entity"));
         ANVIL_FISSION_GENERATOR_ENTITY.createAndRegister(InnovationInsights.createId("anvil_fission_generator"));
+
+        this.registerEnergyStorage(COMPRESSOR_ENTITY);
+        this.registerEnergyStorage(EXTRACTOR_ENTITY);
+		this.registerEnergyStorage(ANVIL_FISSION_GENERATOR_ENTITY);
+    }
+
+    public void registerEnergyStorage(CustomBlockEntityType<?> customBlockEntityType) {
+        EnergyStorage.SIDED.registerForBlockEntity(
+            (blockEntity, direction) -> ((InnovationEnergyFlux.Container) blockEntity).getEnergyStorage(),
+            customBlockEntityType.getBlockEntityTypeIfCreated()
+        );
     }
 }

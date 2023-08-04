@@ -7,13 +7,21 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.base.SimpleEnergyItem;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class InnovationEnergyFlux {
+
+	public static void findStorageForDirections(World world, BlockPos blockPos, Direction.Type type, Consumer<EnergyStorage> energyStorageConsumer) {
+		type.forEach(direction -> Optional.ofNullable(EnergyStorage.SIDED.find(world, blockPos.offset(direction), direction)).ifPresent(energyStorageConsumer));
+	}
 
     public static EnergyStorage findItemStorage(ItemStack stack, Inventory inventory, int index) {
         Optional<EnergyStorage> storage = Optional.ofNullable(EnergyStorage.ITEM.find(

@@ -8,7 +8,6 @@ import com.mmodding.innovation_insights.inventories.ImplementedInventory;
 import com.mmodding.innovation_insights.screenhandlers.generators.AnvilFissionGeneratorScreenHandler;
 import com.mmodding.mmodding_lib.library.blocks.interactions.data.FallingBlockInteractionData;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,6 +19,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import team.reborn.energy.api.base.SimpleEnergyStorage;
@@ -49,6 +49,11 @@ public class AnvilFissionGeneratorEntity extends BlockEntity implements Innovati
         if (stack.isIn(IITags.BATTERIES)) {
             this.transferTo(stack, this, 0, 1000);
         }
+		else {
+			InnovationEnergyFlux.findStorageForDirections(
+                this.getWorld(), this.getPos(), Direction.Type.HORIZONTAL, storage -> InnovationEnergyFlux.transfer(this.getEnergyStorage(), storage, 1000)
+            );
+		}
     }
 
 	public void triggerFission(FallingBlockInteractionData data) {

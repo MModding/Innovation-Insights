@@ -1,5 +1,6 @@
 package com.mmodding.innovation_insights.blockentities.engines;
 
+import com.mmodding.innovation_insights.InnovationEnergyFlux;
 import com.mmodding.innovation_insights.init.IIBlockEntities;
 import com.mmodding.innovation_insights.inventories.ImplementedInventory;
 import com.mmodding.innovation_insights.screenhandlers.engines.CompressorScreenHandler;
@@ -16,8 +17,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
-public class CompressorEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
+public class CompressorEntity extends BlockEntity implements InnovationEnergyFlux.Container, NamedScreenHandlerFactory, ImplementedInventory {
+
+    private final SimpleEnergyStorage energyStorage = new SimpleEnergyStorage(10000L, 10000L, 10000L);
 
     private int compressionTime;
 
@@ -39,6 +43,7 @@ public class CompressorEntity extends BlockEntity implements NamedScreenHandlerF
 
     @Override
     public void readNbt(NbtCompound nbt) {
+        this.readIEF(nbt);
         this.items = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
         Inventories.readNbt(nbt, this.items);
         this.compressionTime = nbt.getInt("compressionTime");
@@ -46,6 +51,7 @@ public class CompressorEntity extends BlockEntity implements NamedScreenHandlerF
 
     @Override
     public void writeNbt(NbtCompound nbt) {
+        this.writeIEF(nbt);
         nbt.putInt("compressionTime", this.compressionTime);
         Inventories.writeNbt(nbt, this.items);
         super.writeNbt(nbt);
@@ -58,6 +64,11 @@ public class CompressorEntity extends BlockEntity implements NamedScreenHandlerF
 
     public int getCompressionTime() {
         return compressionTime;
+    }
+
+    @Override
+    public SimpleEnergyStorage getEnergyStorage() {
+        return this.energyStorage;
     }
 
     @Nullable
