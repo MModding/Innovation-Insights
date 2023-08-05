@@ -15,7 +15,7 @@ public class CompressionSerializer implements RecipeSerializer<Compression> {
 
     @Override
     public Compression read(Identifier id, JsonObject json) {
-        Compression.CompressionsJsonFormat recipeJson = new Gson().fromJson(json, Compression.CompressionsJsonFormat.class);
+        Compression.Json recipeJson = new Gson().fromJson(json, Compression.Json.class);
 
 		int time = recipeJson.compressionTime != 0 ? recipeJson.compressionTime : 100;
 

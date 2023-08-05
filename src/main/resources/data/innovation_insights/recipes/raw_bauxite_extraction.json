@@ -1,18 +1,23 @@
 {
   "type": "innovation_insights:extraction",
+  "extractionTime": 600,
   "input": {
     "item": "innovation_insights:raw_bauxite"
   },
-  "defaultOutput": "minecraft:cobblestone",
-  "defaultOutputAmount": 1,
-  "outputA": "innovation_insights:bauxite_fragment",
-  "outputAAmount": 4,
-  "outputALuck": 85,
-  "outputB": "innovation_insights:aluminium_shard",
-  "outputBAmount": 1,
-  "outputBLuck": 25,
-  "outputC": "innovation_insights:aluminium_ingot",
-  "outputCAmount": 1,
-  "outputCLuck": 5,
-  "extractionTime": 600
+  "defaultOutput": {
+    "item": "minecraft:cobblestone"
+  },
+  "firstAdditionalOutput": {
+    "item": "innovation_insights:bauxite_fragment",
+    "count": 4,
+    "luck": 85
+  },
+  "secondAdditionalOutput": {
+    "item": "innovation_insights:aluminium_shard",
+    "luck": 25
+  },
+  "thirdAdditionalOutput": {
+    "item": "innovation_insights:aluminium_ingot",
+    "luck": 5
+  }
 }

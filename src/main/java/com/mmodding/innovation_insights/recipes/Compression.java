@@ -30,7 +30,7 @@ public class Compression implements Recipe<ImplementedInventory> {
 
     public static class Type implements RecipeType<Compression> {}
 
-    static class CompressionsJsonFormat {
+    public static class Json {
 		int compressionTime;
 		String result;
 		int count;

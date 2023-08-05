@@ -3,6 +3,7 @@ package com.mmodding.innovation_insights.init;
 import com.mmodding.innovation_insights.InnovationInsights;
 import com.mmodding.innovation_insights.blocks.engines.Compressor;
 import com.mmodding.innovation_insights.blocks.engines.Extractor;
+import com.mmodding.innovation_insights.blocks.engines.FurnaceAssembler;
 import com.mmodding.innovation_insights.blocks.reactors.ThermalReactorInterface;
 import com.mmodding.innovation_insights.blocks.generators.AnvilFissionGenerator;
 import com.mmodding.mmodding_lib.library.blocks.CustomBlock;
@@ -64,7 +65,7 @@ public class IIBlocks implements ElementsInitializer {
 		IIItemGroups.INNOVATION_INSIGHTS_MATERIALS
 	);
 
-	public static final CustomBlock FURNACE_ASSEMBLER = new CustomBlock(
+	public static final FurnaceAssembler FURNACE_ASSEMBLER = new FurnaceAssembler(
 		QuiltBlockSettings.of(Material.METAL),
 		true,
 		IIItemGroups.INNOVATION_INSIGHTS_ENGINES

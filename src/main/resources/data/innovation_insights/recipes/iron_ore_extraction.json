@@ -1,18 +1,23 @@
 {
   "type": "innovation_insights:extraction",
+  "extractionTime": 200,
   "input": {
     "item": "minecraft:iron_ore"
   },
-  "defaultOutput": "minecraft:cobblestone",
-  "defaultOutputAmount": 1,
-  "outputA": "minecraft:raw_iron",
-  "outputAAmount": 1,
-  "outputALuck": 85,
-  "outputB": "minecraft:iron_nugget",
-  "outputBAmount": 3,
-  "outputBLuck": 25,
-  "outputC": "minecraft:raw_iron_block",
-  "outputCAmount": 1,
-  "outputCLuck": 5,
-  "extractionTime": 200
+  "defaultOutput": {
+    "item": "minecraft:cobblestone"
+  },
+  "firstAdditionalOutput": {
+    "item": "minecraft:raw_iron",
+    "luck": 85
+  },
+  "secondAdditionalOutput": {
+    "item": "minecraft:iron_nugget",
+    "count": 3,
+    "luck": 25
+  },
+  "thirdAdditionalOutput": {
+    "item": "minecraft:raw_iron_block",
+    "luck": 5
+  }
 }

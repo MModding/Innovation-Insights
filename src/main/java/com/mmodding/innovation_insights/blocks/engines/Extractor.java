@@ -83,22 +83,22 @@ public class Extractor extends CustomBlockWithEntity implements BlockEntityProvi
 
 	private ItemStack getOutputForSlot(Extraction extraction, int slotIndex) {
 		return switch (slotIndex) {
-			default -> extraction.getOutput();
-			case 2 -> extraction.getOutputA();
-			case 3 -> extraction.getOutputB();
-			case 4 -> extraction.getOutputC();
-			case 5 -> extraction.getOutputD();
-			case 6 -> extraction.getOutputE();
+			default -> extraction.getDefaultOutput().stack();
+			case 2 -> extraction.getFirstAdditionalOutput().stack();
+			case 3 -> extraction.getSecondAdditionalOutput().stack();
+			case 4 -> extraction.getThirdAdditionalOutput().stack();
+			case 5 -> extraction.getFourthAdditionalOutput().stack();
+			case 6 -> extraction.getFifthAdditionalOutput().stack();
 		};
 	}
 
 	private int getOutputLuckForSlot(Extraction extraction, int slotIndex) {
 		return switch (slotIndex) {
-			default -> extraction.getOutputALuck();
-			case 3 -> extraction.getOutputBLuck();
-			case 4 -> extraction.getOutputCLuck();
-			case 5 -> extraction.getOutputDLuck();
-			case 6 -> extraction.getOutputELuck();
+			default -> extraction.getFirstAdditionalOutput().luck();
+			case 3 -> extraction.getSecondAdditionalOutput().luck();
+			case 4 -> extraction.getThirdAdditionalOutput().luck();
+			case 5 -> extraction.getFourthAdditionalOutput().luck();
+			case 6 -> extraction.getFifthAdditionalOutput().luck();
 		};
 	}
 
