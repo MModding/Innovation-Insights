@@ -2,12 +2,13 @@ package com.mmodding.innovation_insights.recipes;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
+import com.mmodding.mmodding_lib.library.utils.RecipeSerializationUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
 
 public class CompressionSerializer implements RecipeSerializer<Compression> {
@@ -16,48 +17,34 @@ public class CompressionSerializer implements RecipeSerializer<Compression> {
     public Compression read(Identifier id, JsonObject json) {
         Compression.CompressionsJsonFormat recipeJson = new Gson().fromJson(json, Compression.CompressionsJsonFormat.class);
 
-        Ingredient slotLeft = Ingredient.fromJson(recipeJson.slotLeft);
-        Ingredient slotRight = Ingredient.fromJson(recipeJson.slotRight);
+		int time = recipeJson.compressionTime != 0 ? recipeJson.compressionTime : 100;
 
-        Item compressedItem = Registry.ITEM.getOrEmpty(new Identifier(recipeJson.compressedItem)).get();
-        ItemStack compressedItemStack = new ItemStack(compressedItem, recipeJson.compressedItemAmount);
+		DefaultedList<Ingredient> ingredients = RecipeSerializationUtils.getIngredients(json, "ingredients", 2);
 
-        int compressionTime;
-        if (recipeJson.compressionTime != 0) compressionTime = recipeJson.compressionTime; else compressionTime = 100;
+		ItemStack result = new ItemStack(
+			Registry.ITEM.getOrEmpty(new Identifier(recipeJson.result)).orElseThrow(),
+			recipeJson.count
+		);
 
-        return new Compression(
-            id,
-            compressedItemStack,
-            slotLeft,
-            slotRight,
-            compressionTime
-        );
+        return new Compression(id, time, ingredients, result);
     }
 
     @Override
     public Compression read(Identifier id, PacketByteBuf buf) {
 
-        Ingredient slotLeft = Ingredient.fromPacket(buf);
-        Ingredient slotRight = Ingredient.fromPacket(buf);
+		int time = buf.readInt();
 
-        ItemStack compressedItemStack = buf.readItemStack();
+		DefaultedList<Ingredient> ingredients = RecipeSerializationUtils.readIngredients(buf);
 
-        int compressionTime = buf.readInt();
+		ItemStack result = buf.readItemStack();
 
-        return new Compression(
-            id,
-            compressedItemStack,
-            slotLeft,
-            slotRight,
-            compressionTime
-        );
+        return new Compression(id, time, ingredients, result);
     }
 
     @Override
     public void write(PacketByteBuf buf, Compression recipe) {
-
-        recipe.getInputA().write(buf);
-        recipe.getInputB().write(buf);
+		buf.writeInt(recipe.getCompressionTime());
+		RecipeSerializationUtils.writeIngredients(buf, recipe.getIngredients());
         buf.writeItemStack(recipe.getOutput());
         buf.writeInt(recipe.getCompressionTime());
     }

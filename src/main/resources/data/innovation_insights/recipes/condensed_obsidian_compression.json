@@ -1,0 +1,14 @@
+{
+  "type": "innovation_insights:compression",
+  "compressionTime": 200,
+  "ingredients": [
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    }
+  ],
+  "result": "innovation_insights:condensed_obsidian",
+  "count": 1
+}

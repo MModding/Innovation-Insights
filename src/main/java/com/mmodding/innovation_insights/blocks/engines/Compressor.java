@@ -100,7 +100,10 @@ public class Compressor extends CustomBlockWithEntity implements BlockEntityProv
         Optional<Compression> match = world.getRecipeManager().getFirstMatch(IIRecipeTypes.COMPRESSION, compressorEntity, world);
 
         if (match.isPresent() && compressionTime >= match.get().getCompressionTime()) {
-            if (compressorEntity.getStack(0).getCount() < 64) {
+			ItemStack actualStack = compressorEntity.getStack(0);
+			ItemStack outputStack = match.get().getOutput();
+
+            if (actualStack.isItemEqual(outputStack) || actualStack.isEmpty() && actualStack.getCount() <= actualStack.getMaxCount() - outputStack.getCount()) {
 
                 NbtCompound resetCompressionTimeNbt = new NbtCompound();
 				compressorEntity.writeNbt(resetCompressionTimeNbt);

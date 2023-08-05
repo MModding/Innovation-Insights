@@ -2,21 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "OOO",
-    "ICI",
+    "HCH",
     "OOO"
   ],
   "key": {
     "O": {
       "item": "innovation_insights:condensed_obsidian"
     },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
     "C": {
-      "item": "minecraft:chest"
+      "item": "innovation_insights:copper_battery"
+    },
+    "H": {
+      "item": "minecraft:hopper"
     }
   },
   "result": {
-    "item": "innovation_insights:compressor"
+    "item": "innovation_insights:anvil_fission_generator"
   }
 }

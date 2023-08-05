@@ -1,12 +1,14 @@
 {
   "type": "innovation_insights:compression",
-  "slotLeft": {
-    "item": "minecraft:iron_ingot"
-  },
-  "slotRight": {
-    "item": "minecraft:coal"
-  },
-  "compressedItem": "innovation_insights:steel_ingot",
-  "compressedItemAmount": 1,
-  "compressionTime": 20
+  "compressionTime": 60,
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:coal"
+    }
+  ],
+  "result": "innovation_insights:steel_ingot",
+  "count": 1
 }

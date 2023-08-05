@@ -1,12 +1,14 @@
 {
   "type": "innovation_insights:compression",
-  "slotLeft": {
-    "item": "minecraft:iron_block"
-  },
-  "slotRight": {
-    "item": "minecraft:coal_block"
-  },
-  "compressedItem": "innovation_insights:steel_block",
-  "compressedItemAmount": 1,
-  "compressionTime": 200
+  "compressionTime": 600,
+  "ingredients": [
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:coal_block"
+    }
+  ],
+  "result": "innovation_insights:steel_block",
+  "count": 1
 }

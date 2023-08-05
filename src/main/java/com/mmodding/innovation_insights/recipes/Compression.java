@@ -1,60 +1,69 @@
 package com.mmodding.innovation_insights.recipes;
 
-import com.google.gson.JsonObject;
 import com.mmodding.innovation_insights.init.IIRecipeSerializers;
 import com.mmodding.innovation_insights.init.IIRecipeTypes;
 import com.mmodding.innovation_insights.inventories.ImplementedInventory;
+import com.mmodding.mmodding_lib.library.utils.RecipeUtils;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Compression implements Recipe<ImplementedInventory> {
 
-    private final Ingredient inputA;
-    private final Ingredient inputB;
-    private final ItemStack output;
-    private final Identifier compressionId;
-    private final int compressionTime;
+	private final Identifier compressionId;
+	private final int compressionTime;
+	private final DefaultedList<Ingredient> ingredients;
+	private final ItemStack result;
 
-    public Compression(Identifier id, ItemStack result, Ingredient a, Ingredient b, int time) {
-        compressionId = id;
-        inputA = a;
-        inputB = b;
-        output = result;
-        compressionTime = time;
+    public Compression(Identifier compressionId, int compressionTime, DefaultedList<Ingredient> ingredients, ItemStack result) {
+		this.compressionId = compressionId;
+		this.compressionTime = compressionTime;
+		this.ingredients = ingredients;
+		this.result = result;
     }
 
     public static class Type implements RecipeType<Compression> {}
 
     static class CompressionsJsonFormat {
-        JsonObject slotLeft;
-        JsonObject slotRight;
-        String compressedItem;
-        int compressedItemAmount;
-        int compressionTime;
+		int compressionTime;
+		String result;
+		int count;
     }
 
-    @Override
-    public boolean matches(ImplementedInventory inventory, World world) {
-        return inputA.test(inventory.getStack(1)) && inputB.test(inventory.getStack(2));
-    }
+	@Override
+	public Identifier getId() {
+		return this.compressionId;
+	}
 
-    @Override
-    public ItemStack craft(ImplementedInventory inventory) {
-        return getOutput().copy();
-    }
+	public int getCompressionTime() {
+		return this.compressionTime;
+	}
 
-    public Ingredient getInputA() {
-        return inputA;
-    }
+	@Override
+	public DefaultedList<Ingredient> getIngredients() {
+		return this.ingredients;
+	}
 
-    public Ingredient getInputB() {
-        return inputB;
-    }
+	@Override
+	public ItemStack getOutput() {
+		return this.result;
+	}
+
+	@Override
+	public ItemStack craft(ImplementedInventory inventory) {
+		return getOutput().copy();
+	}
+
+	@Override
+	public boolean matches(ImplementedInventory inventory, World world) {
+		return RecipeUtils.ingredientMatches(inventory, IntArrayList.of(1, 2), this.getIngredients());
+	}
 
     @Override
     public boolean fits(int width, int height) {
@@ -62,22 +71,8 @@ public class Compression implements Recipe<ImplementedInventory> {
     }
 
     @Override
-    public ItemStack getOutput() {
-        return output;
-    }
-
-    @Override
-    public Identifier getId() {
-        return compressionId;
-    }
-
-    @Override
     public RecipeSerializer<Compression> getSerializer() {
         return IIRecipeSerializers.COMPRESSION_SERIALIZER;
-    }
-
-    public int getCompressionTime() {
-        return compressionTime;
     }
 
     @Override
